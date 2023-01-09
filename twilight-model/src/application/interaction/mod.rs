@@ -7,6 +7,7 @@
 pub mod application_command;
 pub mod message_component;
 pub mod modal;
+pub mod resolved;
 
 mod interaction_type;
 
@@ -404,7 +405,7 @@ pub enum InteractionData {
     /// Data received for the [`MessageComponent`] interaction type.
     ///
     /// [`MessageComponent`]: InteractionType::MessageComponent
-    MessageComponent(MessageComponentInteractionData),
+    MessageComponent(Box<MessageComponentInteractionData>),
     /// Data received for the [`ModalSubmit`] interaction type.
     ///
     /// [`ModalSubmit`]: InteractionType::ModalSubmit
@@ -414,10 +415,8 @@ pub enum InteractionData {
 #[cfg(test)]
 mod tests {
     use super::{
-        application_command::{
-            CommandData, CommandDataOption, CommandInteractionDataResolved, CommandOptionValue,
-            InteractionMember,
-        },
+        application_command::{CommandData, CommandDataOption, CommandOptionValue},
+        resolved::{InteractionDataResolved, InteractionMember},
         Interaction, InteractionData, InteractionType,
     };
     use crate::{
@@ -450,7 +449,7 @@ mod tests {
                     name: "member".into(),
                     value: CommandOptionValue::User(Id::new(600)),
                 }]),
-                resolved: Some(CommandInteractionDataResolved {
+                resolved: Some(InteractionDataResolved {
                     attachments: HashMap::new(),
                     channels: HashMap::new(),
                     members: IntoIterator::into_iter([(
@@ -581,7 +580,7 @@ mod tests {
                 Token::Str("resolved"),
                 Token::Some,
                 Token::Struct {
-                    name: "CommandInteractionDataResolved",
+                    name: "InteractionDataResolved",
                     len: 2,
                 },
                 Token::Str("members"),

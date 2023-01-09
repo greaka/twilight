@@ -1,6 +1,6 @@
 use serde::Serialize;
 use twilight_model::{
-    application::interaction::application_command::InteractionMember,
+    application::interaction::resolved::InteractionMember,
     guild::{Member, MemberFlags, PartialMember},
     id::{
         marker::{RoleMarker, UserMarker},
